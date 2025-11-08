@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -22,6 +22,7 @@ const MonsterQuiz = ({ onSolved }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [solved, setSolved] = useState(false);
+  const solvedRef = useRef(false);
 
   const toggle = (name: string) => {
     if (solved) return; // No permitir más interacciones después de resolver
@@ -47,7 +48,7 @@ const MonsterQuiz = ({ onSolved }: Props) => {
   };
 
   const validateAnswer = (selectedMonsters: string[]) => {
-    if (solved) return; // Evitar validaciones duplicadas
+    if (solved || solvedRef.current) return; // Evitar validaciones duplicadas
 
     const lower = new Set(selectedMonsters.map((s) => s.trim().toLowerCase()));
 
@@ -56,6 +57,7 @@ const MonsterQuiz = ({ onSolved }: Props) => {
       lower.size === CORRECT.size && [...CORRECT].every((c) => lower.has(c));
 
     if (isCorrect) {
+      solvedRef.current = true; // Marcar inmediatamente para evitar doble llamada
       setSolved(true);
       setShowSuccess(true);
       setTimeout(() => onSolved(), 3000);

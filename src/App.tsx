@@ -33,9 +33,20 @@ function App() {
   };
 
   const handleSolved = (word: string) => {
-    setWords((prev) => [...prev, word]);
-    setStage((prev) => prev + 1);
+    console.log("handleSolved llamado con:", word);
+    setWords((prev) => {
+      const newWords = [...prev, word];
+      console.log("Palabras actualizadas:", newWords);
+      return newWords;
+    });
+    setStage((prev) => {
+      const newStage = prev + 1;
+      console.log("Stage actualizado:", newStage);
+      return newStage;
+    });
   };
+
+  console.log("App renderizando - Stage actual:", stage, "Palabras:", words);
 
   return (
     <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.webp')] bg-cover bg-center p-4 overflow-hidden">
