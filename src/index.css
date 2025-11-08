@@ -82,7 +82,7 @@ input {
 
 .st {
   width: fit-content;
-  max-width: 800px;
+  max-width: 50rem;
   margin: 6rem auto 3rem auto;
   text-align: center;
   text-transform: uppercase;
@@ -93,7 +93,7 @@ input {
   text-shadow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 1px #ed2b12,
     -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
     0 0 20px #450100;
-  letter-spacing: -2px;
+  letter-spacing: -0.125rem;
 }
 
 .st p {
@@ -104,7 +104,7 @@ input {
 .st-bound {
   box-shadow: -0.05rem -0.05rem 2px #ed2b12, 0.05rem -0.05rem 2px #ed2b12,
     -0.05rem 0.05rem 2px #ed2b12, 0.05rem 0.05rem 2px #ed2b12;
-  height: 5px;
+  height: 0.3125rem;
 }
 
 .st-bound-full {
@@ -118,15 +118,15 @@ input {
 .st-bound-mini {
   margin-top: 3rem;
   align-self: flex-start;
-  min-width: 100px;
+  min-width: 6.25rem;
 }
 
 .st-bound-left {
-  flex: 1 1 100px;
+  flex: 1 1 6.25rem;
 }
 
 .st-bound-right {
-  flex: 1 1 100px;
+  flex: 1 1 6.25rem;
 }
 
 .st-bottom {
@@ -152,7 +152,7 @@ input {
 
 .st-stranger-s {
   font-size: 10.5rem;
-  letter-spacing: -8px;
+  letter-spacing: -0.5rem;
 }
 
 .st-stranger-t {
@@ -195,6 +195,25 @@ input {
   -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
   filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
 }
+#
+  Optimizations
+  to
+  avoid
+  visible
+  seams
+  when
+  fog
+  enters
+  on
+  small/medium
+  screens
+  .fogwrapper {
+  /* hide overflow during animations so layers outside viewport don't show */
+  overflow: hidden;
+  /* promote to its own layer for smoother compositing */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
 #foglayer_01,
 #foglayer_02,
 #foglayer_03 {
@@ -202,6 +221,14 @@ input {
   position: absolute;
   width: 200%;
   z-index: 1;
+}
+
+/* Hint browsers to optimize the fog layers */
+#foglayer_01,
+#foglayer_02,
+#foglayer_03 {
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 #foglayer_01 .image01,
 #foglayer_01 .image02,
@@ -249,6 +276,42 @@ input {
 #foglayer_03 .image02 {
   background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png")
     center center/cover no-repeat transparent;
+}
+
+/* Tablet: reduce horizontal movement and avoid seams when entering viewport.
+   We switch to full-width stacked layers and only animate opacity to prevent
+   visible edges during translate animations. */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  #foglayer_01,
+  #foglayer_02,
+  #foglayer_03 {
+    width: 100%;
+    /* only opacity animation on tablet for smoother entrance */
+    animation: none;
+  }
+
+  /* make each image cover full width so we don't show seams */
+  #foglayer_01 .image01,
+  #foglayer_01 .image02,
+  #foglayer_02 .image01,
+  #foglayer_02 .image02,
+  #foglayer_03 .image01,
+  #foglayer_03 .image02 {
+    float: none;
+    width: 100%;
+    display: block;
+    background-position: center center;
+    background-size: cover;
+  }
+
+  /* allow a subtle opacity animation to keep motion but avoid horizontal movement */
+  #foglayer_01 {
+    animation: foglayer_01_opacity 14s linear infinite;
+  }
+  #foglayer_02,
+  #foglayer_03 {
+    animation: foglayer_02_opacity 21s linear infinite;
+  }
 }
 
 /* ---------- Keyframe Layer 1 ---------- */
@@ -512,6 +575,28 @@ input {
   #foglayer_03 .image01,
   #foglayer_03 .image02 {
     width: 100%;
+  }
+}
+
+/* Responsive adjustments: use rem-based widths for the logo */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  /* md / tablet: reduce logo max width so 50rem (800px) stays for lg */
+  .st {
+    max-width: 40rem; /* ~640px */
+    /* slightly reduce headline size on tablet if needed */
+    font-size: 7rem;
+  }
+
+  .st-bound-mini {
+    min-width: 5rem; /* ~80px */
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  /* lg and up keep the larger max */
+  .st {
+    max-width: 50rem; /* ~800px */
+    font-size: 8rem;
   }
 }
 
