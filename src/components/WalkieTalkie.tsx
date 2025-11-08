@@ -177,7 +177,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
             <img
               src="/walkietalkie.webp"
               alt="Walkie Talkie"
-              className="h-[40] w-auto select-none"
+              className="h-[600px] w-auto select-none"
             />
           </motion.div>
         </div>
