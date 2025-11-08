@@ -1,0 +1,506 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Gruppo", sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --color-rojo: #ff1515;
+  --color-azul: #3a5fe5;
+  --color-verde: #073e1e;
+  --color-negro: #1e0707;
+  --color-azul-2: #1e193c;
+}
+
+/* Register local Benguiat Std fonts present in src/assets/fonts */
+@font-face {
+  font-family: "ITC Benguiat W01";
+  src: url("./assets/fonts/BenguiatStd-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  /* Utility to isolate a component from parent styles and browser defaults.
+   Use by adding the class `no-inherit` to the component's root element.
+   It resets inherited and user-agent properties on the element while
+   allowing component-scoped class rules (like `.st`) to reapply styles.
+*/
+  .no-inherit {
+    all: unset;
+    /* restore some sensible defaults for layout */
+    display: block;
+    box-sizing: border-box;
+  }
+
+  font-family: "ITC Benguiat W01";
+  src: url("./assets/fonts/BenguiatStd-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ITC Benguiat W01";
+  src: url("./assets/fonts/BenguiatStd-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ITC Benguiat W01";
+  src: url("./assets/fonts/BenguiatStd-BookItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ITC Benguiat W01";
+  src: url("./assets/fonts/BenguiatStd-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  @apply font-sans font-regular;
+}
+
+button {
+  @apply cursor-pointer;
+}
+
+.st {
+  width: fit-content;
+  max-width: 800px;
+  margin: 6rem auto 3rem auto;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 8rem;
+  font-family: "ITC Benguiat W01";
+  font-weight: 800;
+  color: #1c0502;
+  text-shadow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 1px #ed2b12,
+    -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
+    0 0 20px #450100;
+  letter-spacing: -2px;
+}
+
+.st p {
+  display: inline-block;
+  margin: 0;
+}
+
+.st-bound {
+  box-shadow: -0.05rem -0.05rem 2px #ed2b12, 0.05rem -0.05rem 2px #ed2b12,
+    -0.05rem 0.05rem 2px #ed2b12, 0.05rem 0.05rem 2px #ed2b12;
+  height: 5px;
+}
+
+.st-bound-full {
+  width: 100%;
+  margin: auto;
+  margin-bottom: -1.2rem;
+  max-width: 100%;
+  margin-left: 0;
+}
+
+.st-bound-mini {
+  margin-top: 3rem;
+  align-self: flex-start;
+  min-width: 100px;
+}
+
+.st-bound-left {
+  flex: 1 1 100px;
+}
+
+.st-bound-right {
+  flex: 1 1 100px;
+}
+
+.st-bottom {
+  top: -5rem;
+  position: relative;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.st-bottom p {
+  margin: 0;
+}
+
+.st-drop {
+  line-height: 0;
+  position: relative;
+  top: 1.55rem;
+}
+
+.st-stranger-s {
+  font-size: 10.5rem;
+  letter-spacing: -8px;
+}
+
+.st-stranger-t {
+  letter-spacing: 0;
+}
+
+.st-stranger-n {
+  letter-spacing: -5px;
+}
+
+.st-stranger-g {
+  letter-spacing: 0;
+}
+
+.st-stranger-r-2 {
+  font-size: 10.5rem;
+  right: 0.2rem;
+}
+
+.st-things-t {
+  font-size: 104%;
+  letter-spacing: 2px;
+}
+
+.st-things-n {
+  letter-spacing: -5px;
+}
+
+.st-things-g {
+  letter-spacing: -3px;
+}
+
+/* ---------- Fog ---------- */
+.fogwrapper {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
+  filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
+}
+#foglayer_01,
+#foglayer_02,
+#foglayer_03 {
+  height: 100%;
+  position: absolute;
+  width: 200%;
+}
+#foglayer_01 .image01,
+#foglayer_01 .image02,
+#foglayer_02 .image01,
+#foglayer_02 .image02,
+#foglayer_03 .image01,
+#foglayer_03 .image02 {
+  float: left;
+  height: 100%;
+  width: 50%;
+}
+#foglayer_01 {
+  -webkit-animation: foglayer_01_opacity 10s linear infinite,
+    foglayer_moveme 15s linear infinite;
+  -moz-animation: foglayer_01_opacity 10s linear infinite,
+    foglayer_moveme 15s linear infinite;
+  animation: foglayer_01_opacity 10s linear infinite,
+    foglayer_moveme 15s linear infinite;
+}
+#foglayer_02,
+#foglayer_03 {
+  -webkit-animation: foglayer_02_opacity 21s linear infinite,
+    foglayer_moveme 13s linear infinite;
+  -moz-animation: foglayer_02_opacity 21s linear infinite,
+    foglayer_moveme 13s linear infinite;
+  animation: foglayer_02_opacity 21s linear infinite,
+    foglayer_moveme 13s linear infinite;
+}
+
+/* ---------- Moving Fog ---------- */
+/*
+  'size: cover' || 'size: 100%'; results remain the same
+  'attachment: scroll' can be added or removed; results remain the same
+  'attachment: fixed' causing unexpected results in Chrome
+  'repeat-x' || 'no-repeat'; results remain the same
+*/
+#foglayer_01 .image01,
+#foglayer_01 .image02 {
+  background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog1.png")
+    center center/cover no-repeat transparent;
+}
+#foglayer_02 .image01,
+#foglayer_02 .image02,
+#foglayer_03 .image01,
+#foglayer_03 .image02 {
+  background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog2.png")
+    center center/cover no-repeat transparent;
+}
+
+/* ---------- Keyframe Layer 1 ---------- */
+@-webkit-keyframes foglayer_01_opacity {
+  0% {
+    opacity: 0.1;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.28;
+  }
+  58% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+@-moz-keyframes foglayer_01_opacity {
+  0% {
+    opacity: 0.1;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.28;
+  }
+  58% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+@-o-keyframes foglayer_01_opacity {
+  0% {
+    opacity: 0.1;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.28;
+  }
+  58% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+@keyframes foglayer_01_opacity {
+  0% {
+    opacity: 0.1;
+  }
+  22% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.28;
+  }
+  58% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+/* ---------- Keyframe Layer 2 ---------- */
+@-webkit-keyframes foglayer_02_opacity {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@-moz-keyframes foglayer_02_opacity {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@-o-keyframes foglayer_02_opacity {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@keyframes foglayer_02_opacity {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+/* ---------- Keyframe Layer 3 ---------- */
+@-webkit-keyframes foglayer_03_opacity {
+  0% {
+    opacity: 0.8;
+  }
+  27% {
+    opacity: 0.2;
+  }
+  52% {
+    opacity: 0.6;
+  }
+  68% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+@-moz-keyframes foglayer_03_opacity {
+  0% {
+    opacity: 0.8;
+  }
+  27% {
+    opacity: 0.2;
+  }
+  52% {
+    opacity: 0.6;
+  }
+  68% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+@-o-keyframes foglayer_03_opacity {
+  0% {
+    opacity: 0.8;
+  }
+  27% {
+    opacity: 0.2;
+  }
+  52% {
+    opacity: 0.6;
+  }
+  68% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+@keyframes foglayer_03_opacity {
+  0% {
+    opacity: 0.8;
+  }
+  27% {
+    opacity: 0.2;
+  }
+  52% {
+    opacity: 0.6;
+  }
+  68% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+/* ---------- Keyframe moveMe ---------- */
+@-webkit-keyframes foglayer_moveme {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+@-moz-keyframes foglayer_moveme {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+@-o-keyframes foglayer_moveme {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+@keyframes foglayer_moveme {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+@media only screen and (min-width: 280px) and (max-width: 767px) {
+  #foglayer_01 .image01,
+  #foglayer_01 .image02,
+  #foglayer_02 .image01,
+  #foglayer_02 .image02,
+  #foglayer_03 .image01,
+  #foglayer_03 .image02 {
+    width: 100%;
+  }
+}
