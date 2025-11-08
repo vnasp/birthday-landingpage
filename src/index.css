@@ -13,6 +13,8 @@
   --color-verde: #073e1e;
   --color-negro: #1e0707;
   --color-azul-2: #1e193c;
+
+  --text-4xl--line-height: 0.95;
 }
 
 /* Register local Benguiat Std fonts present in src/assets/fonts */
@@ -108,15 +110,11 @@ input {
 }
 
 .st-bound-full {
-  width: 100%;
-  margin: auto;
-  margin-bottom: -1.2rem;
-  max-width: 100%;
-  margin-left: 0;
+  @apply lg:-mb-4 md:-mb-3 w-full max-w-full ms-0;
 }
 
 .st-bound-mini {
-  margin-top: 3rem;
+  @apply lg:mt-12 md:mt-8;
   align-self: flex-start;
   min-width: 6.25rem;
 }
@@ -628,22 +626,6 @@ input {
   transform: translate(-50%, -50%);
   box-shadow: inset 0 0 0 4px #635a84;
   z-index: 100;
-}
-
-.bulb .bulb-center:after {
-  content: "";
-  display: block;
-  height: 14px;
-  width: 14px;
-  background-color: #7b7394;
-  border-radius: 50%;
-  position: absolute;
-  transition: 0.7s;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 2px 4px #524a73;
-  z-index: -1;
 }
 
 .bulb .filament-1,
