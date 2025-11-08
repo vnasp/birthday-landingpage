@@ -59,19 +59,23 @@ const WalkieTalkie = ({ onSolved }: Props) => {
         // Error "no-speech" - mostrar mensaje amigable
         if (event.error === "no-speech") {
           console.log("No se detectó voz, intenta de nuevo");
-          setErrorMessage("No te escucho, dilo de nuevo un poco más fuerte (sin gritar)");
+          setErrorMessage(
+            "No te escucho, dilo de nuevo un poco más fuerte (sin gritar)"
+          );
           setTimeout(() => setErrorMessage(""), 4000);
           return;
         }
 
-        // Si hay un error de permisos, mostrar mensaje
+        // Si hay un error de permisos, mostrar mensaje amigable
         if (
           event.error === "not-allowed" ||
           event.error === "service-not-allowed"
         ) {
-          alert(
-            "No se pudo acceder al reconocimiento de voz. Por favor, permite el acceso al micrófono en la configuración de tu navegador e intenta de nuevo."
+          console.error("Permisos de micrófono denegados:", event.error);
+          setErrorMessage(
+            "No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador."
           );
+          setTimeout(() => setErrorMessage(""), 5000);
         }
       };
     }
@@ -127,7 +131,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       setTranscript("");
       setErrorMessage("");
       setIsListening(true);
-      
+
       // Dar un pequeño delay antes de comenzar (ayuda en Safari)
       setTimeout(() => {
         if (recognitionRef.current) {
@@ -137,7 +141,9 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     } catch (err) {
       console.error("Error starting recognition:", err);
       setIsListening(false);
-      setErrorMessage("No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador.");
+      setErrorMessage(
+        "No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador."
+      );
       setTimeout(() => setErrorMessage(""), 5000);
     }
   };
