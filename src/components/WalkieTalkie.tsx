@@ -96,11 +96,36 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     }
   };
 
-  const startListening = () => {
-    if (recognitionRef.current && !isListening) {
+  const startListening = async () => {
+    if (!recognitionRef.current || isListening) return;
+
+    try {
+      // Pedir permisos de micrófono explícitamente
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+
       setTranscript("");
       setIsListening(true);
       recognitionRef.current.start();
+    } catch (err) {
+      console.error("Error requesting microphone permission:", err);
+      alert(
+        "Por favor, permite el acceso al micrófono para continuar. O escribe manualmente la respuesta."
+      );
+      // Mostrar alternativa de input de texto si falla
+      const answer = prompt(
+        '"Martín... ¿cómo se llama la niña que mueve cosas con la mente?"'
+      );
+      if (
+        answer &&
+        (answer.toLowerCase().includes("eleven") ||
+          answer.toLowerCase().includes("once") ||
+          answer.includes("11"))
+      ) {
+        setShowSuccess(true);
+        setTimeout(() => {
+          onSolved();
+        }, 3000);
+      }
     }
   };
 
