@@ -33,20 +33,9 @@ function App() {
   };
 
   const handleSolved = (word: string) => {
-    console.log("handleSolved llamado con:", word);
-    setWords((prev) => {
-      const newWords = [...prev, word];
-      console.log("Palabras actualizadas:", newWords);
-      return newWords;
-    });
-    setStage((prev) => {
-      const newStage = prev + 1;
-      console.log("Stage actualizado:", newStage);
-      return newStage;
-    });
+    setWords((prev) => [...prev, word]);
+    setStage((prev) => prev + 1);
   };
-
-  console.log("App renderizando - Stage actual:", stage, "Palabras:", words);
 
   return (
     <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.webp')] bg-cover bg-center p-4 overflow-hidden">
@@ -90,9 +79,10 @@ function App() {
           <motion.div
             key="intro"
             className="text-center p-6 relative z-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             <Logo />
             <p className="text-xl mb-6 tracking-widest">
@@ -110,17 +100,49 @@ function App() {
           </motion.div>
         )}
 
-        {stage === 1 && <LightsPuzzle onSolved={() => handleSolved("FELIZ")} />}
-        {stage === 2 && (
-          <WalkieTalkie onSolved={() => handleSolved("CUMPLEAÑOS")} />
+        {stage === 1 && (
+          <motion.div
+            key="lights"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <LightsPuzzle onSolved={() => handleSolved("FELIZ")} />
+          </motion.div>
         )}
-        {stage === 3 && <MonsterQuiz onSolved={() => handleSolved("MARTÍN")} />}
+
+        {stage === 2 && (
+          <motion.div
+            key="walkie"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <WalkieTalkie onSolved={() => handleSolved("CUMPLEAÑOS")} />
+          </motion.div>
+        )}
+
+        {stage === 3 && (
+          <motion.div
+            key="monster"
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <MonsterQuiz onSolved={() => handleSolved("MARTÍN")} />
+          </motion.div>
+        )}
+
         {stage === 4 && (
           <motion.div
-            key="portal-wrapper"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            key="portal"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <PortalReveal />
           </motion.div>
