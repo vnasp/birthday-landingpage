@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LightsPuzzle from "./components/LightsPuzzle";
 import WalkieTalkie from "./components/WalkieTalkie";
@@ -12,6 +12,13 @@ function App() {
   const [words, setWords] = useState<string[]>([]);
   const [audioOn, setAudioOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Establecer volumen del audio ambiental
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3; // 30% del volumen original
+    }
+  }, []);
 
   const handleAudioToggle = () => {
     const audio = audioRef.current;

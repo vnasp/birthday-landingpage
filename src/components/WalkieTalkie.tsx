@@ -68,10 +68,28 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     if (!audioRef.current) return;
     try {
       setIsPlaying(true);
+
+      // Bajar volumen del audio ambiental
+      const ambientAudio = document.querySelector(
+        'audio[src*="ost.mp3"]'
+      ) as HTMLAudioElement;
+      const originalVolume = ambientAudio?.volume || 0.3;
+      if (ambientAudio) {
+        ambientAudio.volume = 0.05; // Bajar a 5%
+      }
+
+      // Aumentar volumen del walkie talkie
+      audioRef.current.volume = 1; // 100% de volumen
+
       await audioRef.current.play();
       audioRef.current.onended = () => {
         setIsPlaying(false);
         setMessagePlayed(true);
+
+        // Restaurar volumen del audio ambiental
+        if (ambientAudio) {
+          ambientAudio.volume = originalVolume;
+        }
       };
     } catch (err) {
       console.warn("Audio playback blocked:", err);
