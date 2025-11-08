@@ -8,18 +8,23 @@ interface Props {
 const originalLetters = ["F", "E", "L", "I", "Z", "R", "A", "N", "D", "O", "M"];
 
 const LightsPuzzle = ({ onSolved }: Props) => {
-  const [sequence, setSequence] = useState<string[]>([]);
+  const [activeLetters, setActiveLetters] = useState<string[]>([]);
   const correct = ["F", "E", "L", "I", "Z"];
 
-  // 🔀 Mezclar letras solo una vez (cuando el componente se monta)
   const letters = useMemo(() => {
     return [...originalLetters].sort(() => Math.random() - 0.5);
   }, []);
 
   const handleClick = (letter: string) => {
-    const next = [...sequence, letter];
-    setSequence(next);
-    if (next.join("") === correct.join("")) {
+    if (activeLetters.includes(letter)) {
+      setActiveLetters(activeLetters.filter((l) => l !== letter));
+    } else {
+      setActiveLetters([...activeLetters, letter]);
+    }
+
+    // Opción: validar orden libre
+    const all = correct.every((l) => [...activeLetters, letter].includes(l));
+    if (all && activeLetters.length + 1 >= correct.length) {
       setTimeout(() => onSolved(), 800);
     }
   };
@@ -35,23 +40,46 @@ const LightsPuzzle = ({ onSolved }: Props) => {
         Las luces parpadean... ¿Qué intentan decir?
       </h2>
       <div className="grid grid-cols-5 gap-4 mt-6">
-        {letters.map((letter, i) => (
-          <motion.button
-            key={i}
-            onClick={() => handleClick(letter)}
-            whileTap={{ scale: 0.9 }}
-            className={`text-2xl rounded-full h-14 w-14 border-2 border-gray-600 transition-all duration-200
-              ${
-                sequence.includes(letter)
-                  ? "bg-yellow-400 text-black shadow-[0_0_10px_rgba(255,255,100,0.8)]"
-                  : "bg-gray-800 hover:bg-gray-700"
-              }`}
-          >
-            {letter}
-          </motion.button>
-        ))}
+        {letters.map((letter, i) => {
+          const isActive = activeLetters.includes(letter);
+          return (
+            <button
+              key={i}
+              onClick={() => handleClick(letter)}
+              className="relative inline-block"
+            >
+              <input
+                type="checkbox"
+                checked={isActive}
+                readOnly
+                className="absolute opacity-0 pointer-events-none"
+              />
+              <label className="cursor-pointer block h-[90px] w-[90px] bg-transparent border-0 rounded-[50px]">
+                <span className={`bulb ${isActive ? "active" : ""}`}>
+                  <span className="filament-1"></span>
+                  <span className="filament-2"></span>
+                  <span className="reflections">
+                    <span></span>
+                  </span>
+                  <span className="sparks">
+                    <span className="spark1"></span>
+                    <span className="spark2"></span>
+                    <span className="spark3"></span>
+                    <span className="spark4"></span>
+                  </span>
+                  <span
+                    className={`bulb-center flex items-center justify-center text-4xl font-bold relative z-100 not-italic ${
+                      isActive ? "text-black" : "text-white"
+                    }`}
+                  >
+                    {letter}
+                  </span>
+                </span>
+              </label>
+            </button>
+          );
+        })}
       </div>
-      {/* 🔊 Aquí puedes añadir sonido de luces parpadeando */}
     </motion.div>
   );
 };
