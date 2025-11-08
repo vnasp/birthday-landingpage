@@ -5,7 +5,7 @@ interface Props {
   onSolved: () => void;
 }
 
-const originalLetters = ["F", "E", "L", "I", "Z", "R", "A", "N", "D", "O", "M"];
+const originalLetters = ["F", "E", "L", "I", "Z", "R", "A", "D", "O", "M"];
 
 const LightsPuzzle = ({ onSolved }: Props) => {
   const [activeLetters, setActiveLetters] = useState<string[]>([]);

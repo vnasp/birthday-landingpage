@@ -25,6 +25,16 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = "es-ES";
 
+      // Pedir permisos de micrófono al inicializar
+      navigator.mediaDevices
+        ?.getUserMedia({ audio: true })
+        .then(() => {
+          console.log("Microphone permission granted");
+        })
+        .catch((err) => {
+          console.warn("Microphone permission denied:", err);
+        });
+
       recognitionRef.current.onresult = (event: any) => {
         const speechResult = event.results[0][0].transcript.toLowerCase();
         setTranscript(speechResult);
@@ -54,6 +64,32 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       recognitionRef.current.onerror = (event: any) => {
         console.error("Speech recognition error:", event.error);
         setIsListening(false);
+
+        // Si hay un error de permisos, ofrecer alternativa
+        if (
+          event.error === "not-allowed" ||
+          event.error === "service-not-allowed"
+        ) {
+          alert(
+            "No se pudo acceder al reconocimiento de voz. Por favor, escribe tu respuesta."
+          );
+          const answer = prompt(
+            '"Martín... ¿cómo se llama la niña que mueve cosas con la mente?"'
+          );
+          if (answer) {
+            const cleanAnswer = answer.toLowerCase().trim().replace(/\s+/g, "");
+            if (
+              cleanAnswer.includes("eleven") ||
+              cleanAnswer.includes("once") ||
+              cleanAnswer.includes("11")
+            ) {
+              setShowSuccess(true);
+              setTimeout(() => {
+                onSolved();
+              }, 3000);
+            }
+          }
+        }
       };
     }
 
@@ -100,38 +136,18 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     if (!recognitionRef.current || isListening) return;
 
     try {
-      // Pedir permisos de micrófono explícitamente
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-
       setTranscript("");
       setIsListening(true);
       recognitionRef.current.start();
     } catch (err) {
-      console.error("Error requesting microphone permission:", err);
-      alert(
-        "Por favor, permite el acceso al micrófono para continuar. O escribe manualmente la respuesta."
-      );
-      // Mostrar alternativa de input de texto si falla
-      const answer = prompt(
-        '"Martín... ¿cómo se llama la niña que mueve cosas con la mente?"'
-      );
-      if (
-        answer &&
-        (answer.toLowerCase().includes("eleven") ||
-          answer.toLowerCase().includes("once") ||
-          answer.includes("11"))
-      ) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          onSolved();
-        }, 3000);
-      }
+      console.error("Error starting recognition:", err);
+      setIsListening(false);
     }
   };
 
   return (
     <div
-      className="fixed inset-0 bg-cover bg-center bg-no-repeat z-20 transition-all duration-1000"
+      className="fixed inset-0 bg-cover bg-center bg-no-repeat z-20 transition-all duration-1000 flex flex-col"
       style={{
         backgroundImage: showSuccess ? "url(/bg1.jpg)" : "url(/bg2.webp)",
       }}
@@ -150,10 +166,10 @@ const WalkieTalkie = ({ onSolved }: Props) => {
         </motion.div>
       )}
 
-      {/* Micrófono - top center */}
+      {/* Micrófono - top */}
       {messagePlayed && !showSuccess && (
         <motion.div
-          className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center gap-4"
+          className="shrink-0 pt-8 pb-4 px-4 z-30 flex flex-col items-center gap-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -176,9 +192,12 @@ const WalkieTalkie = ({ onSolved }: Props) => {
         </motion.div>
       )}
 
-      {/* Walkie Talkie - center bottom */}
+      {/* Espaciador flexible */}
+      <div className="grow"></div>
+
+      {/* Walkie Talkie - bottom */}
       {!showSuccess && (
-        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="shrink-0 pb-8 z-30 flex justify-center">
           <motion.div
             className="relative cursor-pointer"
             onClick={handlePlayAudio}
@@ -202,7 +221,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
             <img
               src="/walkietalkie.webp"
               alt="Walkie Talkie"
-              className="h-[600px] w-auto select-none"
+              className="max-h-[50vh] w-auto select-none"
             />
           </motion.div>
         </div>
