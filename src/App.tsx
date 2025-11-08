@@ -31,14 +31,14 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.jpg')] bg-cover bg-center p-4">
+    <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.jpg')] bg-cover bg-center p-4 overflow-hidden">
       <FogAnimation />
 
       <audio ref={audioRef} src="./audio/ost.mp3" loop className="hidden" />
 
       <button
         onClick={handleAudioToggle}
-        className="absolute top-4 right-4 group"
+        className="absolute top-4 right-4 group z-20"
         aria-label="Activar o pausar sonido"
       >
         <motion.div
@@ -71,7 +71,7 @@ function App() {
         {stage === 0 && (
           <motion.div
             key="intro"
-            className="text-center p-6"
+            className="text-center p-6 relative z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

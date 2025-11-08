@@ -183,6 +183,7 @@ button {
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: 1;
   -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
   filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
 }
@@ -192,6 +193,7 @@ button {
   height: 100%;
   position: absolute;
   width: 200%;
+  z-index: 1;
 }
 #foglayer_01 .image01,
 #foglayer_01 .image02,

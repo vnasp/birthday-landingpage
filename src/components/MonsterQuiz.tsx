@@ -19,7 +19,7 @@ const MonsterQuiz = ({ onSolved }: Props) => {
   return (
     <motion.div
       key="monster"
-      className="flex flex-col items-center text-center p-6"
+      className="flex flex-col items-center text-center p-6 relative z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >

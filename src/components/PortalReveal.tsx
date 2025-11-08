@@ -9,7 +9,7 @@ const PortalReveal = ({ words }: Props) => {
   return (
     <motion.div
       key="portal"
-      className="relative flex flex-col items-center justify-center text-center w-full h-screen overflow-hidden"
+      className="relative flex flex-col items-center justify-center text-center w-full h-screen overflow-hidden z-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >

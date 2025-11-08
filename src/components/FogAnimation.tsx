@@ -1,6 +1,6 @@
 function FogAnimation() {
   return (
-    <>
+    <div className="fogwrapper">
       <div id="foglayer_01" className="fog">
         <div className="image01"></div>
         <div className="image02"></div>
@@ -13,7 +13,7 @@ function FogAnimation() {
         <div className="image01"></div>
         <div className="image02"></div>
       </div>
-    </>
+    </div>
   );
 }
 
