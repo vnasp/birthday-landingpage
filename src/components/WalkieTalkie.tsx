@@ -26,16 +26,6 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = "es-ES";
 
-      // Pedir permisos de micrófono al inicializar
-      navigator.mediaDevices
-        ?.getUserMedia({ audio: true })
-        .then(() => {
-          console.log("Microphone permission granted");
-        })
-        .catch((err) => {
-          console.warn("Microphone permission denied:", err);
-        });
-
       recognitionRef.current.onresult = (event: any) => {
         const speechResult = event.results[0][0].transcript.toLowerCase();
         setTranscript(speechResult);
@@ -129,12 +119,26 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     if (!recognitionRef.current || isListening) return;
 
     try {
+      // Pedir permisos de micrófono solo al hacer clic
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+      }
+
       setTranscript("");
+      setErrorMessage("");
       setIsListening(true);
-      recognitionRef.current.start();
+      
+      // Dar un pequeño delay antes de comenzar (ayuda en Safari)
+      setTimeout(() => {
+        if (recognitionRef.current) {
+          recognitionRef.current.start();
+        }
+      }, 100);
     } catch (err) {
       console.error("Error starting recognition:", err);
       setIsListening(false);
+      setErrorMessage("No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador.");
+      setTimeout(() => setErrorMessage(""), 5000);
     }
   };
 
