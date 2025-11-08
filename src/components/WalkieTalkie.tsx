@@ -16,22 +16,23 @@ const WalkieTalkie = ({ onSolved }: Props) => {
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    // Inicializar Web Speech API
+    // Evitar problemas si se renderiza del lado del servidor
+    if (typeof window === "undefined") return;
+
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       const SpeechRecognition =
         (window as any).SpeechRecognition ||
         (window as any).webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = "es-ES";
 
-      recognitionRef.current.onresult = (event: any) => {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "es-ES";
+
+      recognition.onresult = (event: any) => {
         const speechResult = event.results[0][0].transcript.toLowerCase();
         setTranscript(speechResult);
 
-        // Verificar si dijo "eleven" o "once" (incluyendo número 11)
-        // Limpiar espacios y verificar
         const cleanResult = speechResult.trim().replace(/\s+/g, "");
         if (
           cleanResult.includes("eleven") ||
@@ -48,36 +49,38 @@ const WalkieTalkie = ({ onSolved }: Props) => {
         }
       };
 
-      recognitionRef.current.onend = () => {
+      recognition.onend = () => {
         setIsListening(false);
       };
 
-      recognitionRef.current.onerror = (event: any) => {
+      recognition.onerror = (event: any) => {
         console.error("Speech recognition error:", event.error);
         setIsListening(false);
 
-        // Error "no-speech" - mostrar mensaje amigable
         if (event.error === "no-speech") {
-          console.log("No se detectó voz, intenta de nuevo");
           setErrorMessage(
-            "No te escucho, dilo de nuevo un poco más fuerte (sin gritar)"
+            "No te escucho, dilo de nuevo un poco más fuerte (sin gritar)."
           );
           setTimeout(() => setErrorMessage(""), 4000);
           return;
         }
 
-        // Si hay un error de permisos, mostrar mensaje amigable
         if (
           event.error === "not-allowed" ||
           event.error === "service-not-allowed"
         ) {
-          console.error("Permisos de micrófono denegados:", event.error);
           setErrorMessage(
-            "No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador."
+            "Safari bloqueó el micrófono para este sitio. Revisa los permisos del micrófono para este dominio."
           );
           setTimeout(() => setErrorMessage(""), 5000);
         }
       };
+
+      recognitionRef.current = recognition;
+    } else {
+      setErrorMessage(
+        "Tu navegador no soporta reconocimiento de voz. Pídele ayuda a un adulto para escribir la respuesta."
+      );
     }
 
     return () => {
@@ -95,21 +98,20 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       // Bajar volumen del audio ambiental
       const ambientAudio = document.querySelector(
         'audio[src*="ost.mp3"]'
-      ) as HTMLAudioElement;
-      const originalVolume = ambientAudio?.volume || 0.3;
+      ) as HTMLAudioElement | null;
+      const originalVolume = ambientAudio?.volume ?? 0.3;
+
       if (ambientAudio) {
-        ambientAudio.volume = 0.05; // Bajar a 5%
+        ambientAudio.volume = 0.05;
       }
 
-      // Aumentar volumen del walkie talkie
-      audioRef.current.volume = 1; // 100% de volumen
+      audioRef.current.volume = 1;
 
       await audioRef.current.play();
       audioRef.current.onended = () => {
         setIsPlaying(false);
         setMessagePlayed(true);
 
-        // Restaurar volumen del audio ambiental
         if (ambientAudio) {
           ambientAudio.volume = originalVolume;
         }
@@ -119,32 +121,32 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     }
   };
 
-  const startListening = async () => {
+  const startListening = () => {
     if (!recognitionRef.current || isListening) return;
 
     try {
-      // Pedir permisos de micrófono solo al hacer clic
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-      }
-
       setTranscript("");
       setErrorMessage("");
       setIsListening(true);
 
-      // Dar un pequeño delay antes de comenzar (ayuda en Safari)
-      setTimeout(() => {
-        if (recognitionRef.current) {
-          recognitionRef.current.start();
-        }
-      }, 100);
-    } catch (err) {
+      // Safari se lleva mejor si llamamos start directamente en el click
+      recognitionRef.current.start();
+    } catch (err: any) {
       console.error("Error starting recognition:", err);
       setIsListening(false);
-      setErrorMessage(
-        "No se pudo acceder al micrófono. Por favor, permite el acceso en la configuración de tu navegador."
-      );
-      setTimeout(() => setErrorMessage(""), 5000);
+
+      if (
+        err.name === "NotAllowedError" ||
+        err.message?.toLowerCase().includes("not allowed")
+      ) {
+        setErrorMessage(
+          "No se pudo acceder al micrófono. Revisa los permisos para este sitio en Safari."
+        );
+        setTimeout(() => setErrorMessage(""), 5000);
+      } else {
+        setErrorMessage("Ocurrió un problema al iniciar el micrófono.");
+        setTimeout(() => setErrorMessage(""), 5000);
+      }
     }
   };
 
@@ -187,13 +189,15 @@ const WalkieTalkie = ({ onSolved }: Props) => {
           >
             {isListening ? "🎤 Escuchando..." : "🎤 Presiona para hablar"}
           </button>
+
           {errorMessage && (
-            <p className="text-red-400 text-lg animate-pulse font-semibold">
+            <p className="text-red-400 text-lg animate-pulse font-semibold text-center max-w-md">
               {errorMessage}
             </p>
           )}
+
           {transcript && (
-            <p className="text-white text-lg">
+            <p className="text-white text-lg text-center max-w-md">
               Escuché: <span className="font-bold">{transcript}</span>
             </p>
           )}
@@ -201,7 +205,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
       )}
 
       {/* Espaciador flexible */}
-      <div className="grow"></div>
+      <div className="grow" />
 
       {/* Walkie Talkie - bottom */}
       {!showSuccess && (
