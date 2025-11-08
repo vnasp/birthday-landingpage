@@ -11,6 +11,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -65,30 +66,22 @@ const WalkieTalkie = ({ onSolved }: Props) => {
         console.error("Speech recognition error:", event.error);
         setIsListening(false);
 
-        // Si hay un error de permisos, ofrecer alternativa
+        // Error "no-speech" - mostrar mensaje amigable
+        if (event.error === "no-speech") {
+          console.log("No se detectó voz, intenta de nuevo");
+          setErrorMessage("No te escucho, dilo de nuevo un poco más fuerte (sin gritar)");
+          setTimeout(() => setErrorMessage(""), 4000);
+          return;
+        }
+
+        // Si hay un error de permisos, mostrar mensaje
         if (
           event.error === "not-allowed" ||
           event.error === "service-not-allowed"
         ) {
           alert(
-            "No se pudo acceder al reconocimiento de voz. Por favor, escribe tu respuesta."
+            "No se pudo acceder al reconocimiento de voz. Por favor, permite el acceso al micrófono en la configuración de tu navegador e intenta de nuevo."
           );
-          const answer = prompt(
-            '"Martín... ¿cómo se llama la niña que mueve cosas con la mente?"'
-          );
-          if (answer) {
-            const cleanAnswer = answer.toLowerCase().trim().replace(/\s+/g, "");
-            if (
-              cleanAnswer.includes("eleven") ||
-              cleanAnswer.includes("once") ||
-              cleanAnswer.includes("11")
-            ) {
-              setShowSuccess(true);
-              setTimeout(() => {
-                onSolved();
-              }, 3000);
-            }
-          }
         }
       };
     }
@@ -184,6 +177,11 @@ const WalkieTalkie = ({ onSolved }: Props) => {
           >
             {isListening ? "🎤 Escuchando..." : "🎤 Presiona para hablar"}
           </button>
+          {errorMessage && (
+            <p className="text-red-400 text-lg animate-pulse font-semibold">
+              {errorMessage}
+            </p>
+          )}
           {transcript && (
             <p className="text-white text-lg">
               Escuché: <span className="font-bold">{transcript}</span>
@@ -221,7 +219,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
             <img
               src="/walkietalkie.webp"
               alt="Walkie Talkie"
-              className="max-h-[50vh] w-auto select-none"
+              className="max-h-[70vh] w-auto select-none"
             />
           </motion.div>
         </div>
