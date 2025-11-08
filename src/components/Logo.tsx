@@ -2,7 +2,7 @@ function Logo() {
   return (
     <div className="st no-inherit">
       <div className="st-top">
-        <p className="relative">
+        <div className="relative">
           <div className="st-bound st-bound-full"></div>
           <span className="st-drop st-stranger-s">S</span>
           <span className="st-stranger-t">t</span>
@@ -12,19 +12,19 @@ function Logo() {
           <span className="st-stranger-g">g</span>
           <span className="st-stranger-e">e</span>
           <span className="st-drop st-stranger-r-2">r</span>
-        </p>
+        </div>
       </div>
 
       <div className="st-bottom">
         <div className="st-bound st-bound-mini st-bound-left"></div>
-        <p>
+        <div>
           <span className="st-things-t">T</span>
           <span className="st-things-h">h</span>
           <span className="st-things-i">i</span>
           <span className="st-things-n">n</span>
           <span className="st-things-g">g</span>
           <span className="st-things-s">s</span>
-        </p>
+        </div>
         <div className="st-bound st-bound-mini st-bound-right"></div>
       </div>
     </div>

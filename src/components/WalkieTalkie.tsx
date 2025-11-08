@@ -154,7 +154,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
     <div
       className="fixed inset-0 bg-cover bg-center bg-no-repeat z-20 transition-all duration-1000 flex flex-col"
       style={{
-        backgroundImage: showSuccess ? "url(/bg1.jpg)" : "url(/bg2.webp)",
+        backgroundImage: showSuccess ? "url(/bg1.webp)" : "url(/bg2.webp)",
       }}
     >
       {/* Mensaje de éxito */}
@@ -233,7 +233,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
             <img
               src="/walkietalkie.webp"
               alt="Walkie Talkie"
-              className="max-h-[70vh] w-auto select-none"
+              className="max-h-[65vh] w-auto select-none"
             />
           </motion.div>
         </div>

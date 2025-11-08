@@ -5,12 +5,12 @@ interface Props {
   onSolved: () => void;
 }
 
-const originalLetters = ["F", "E", "L", "I", "Z", "R", "A", "D", "O", "M"];
+const originalLetters = ["V", "E", "C", "N", "A", "R", "X", "D", "O", "M"];
 
 const LightsPuzzle = ({ onSolved }: Props) => {
   const [activeLetters, setActiveLetters] = useState<string[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
-  const correct = ["F", "E", "L", "I", "Z"];
+  const correct = ["V", "E", "C", "N", "A"];
 
   const letters = useMemo(() => {
     return [...originalLetters].sort(() => Math.random() - 0.5);

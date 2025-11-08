@@ -38,7 +38,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.jpg')] bg-cover bg-center p-4 overflow-hidden">
+    <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.webp')] bg-cover bg-center p-4 overflow-hidden">
       <FogAnimation />
 
       <audio ref={audioRef} src="./audio/ost.mp3" loop className="hidden" />
@@ -104,7 +104,16 @@ function App() {
           <WalkieTalkie onSolved={() => handleSolved("CUMPLEAÑOS")} />
         )}
         {stage === 3 && <MonsterQuiz onSolved={() => handleSolved("MARTÍN")} />}
-        {stage === 4 && <PortalReveal words={words} />}
+        {stage === 4 && (
+          <motion.div
+            key="portal-wrapper"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <PortalReveal words={words} />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
