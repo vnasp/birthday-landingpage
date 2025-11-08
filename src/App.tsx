@@ -122,7 +122,7 @@ function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <PortalReveal words={words} />
+            <PortalReveal />
           </motion.div>
         )}
       </AnimatePresence>
