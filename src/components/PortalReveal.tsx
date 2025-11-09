@@ -13,7 +13,7 @@ const particles = Array.from({ length: 75 }, (_, i) => ({
 
 function PortalReveal() {
   const [displayedText, setDisplayedText] = useState("");
-  const fullText = "Mensaje secreto descifrado:";
+  const fullText = "Mensaje secreto descifrado";
 
   useEffect(() => {
     let currentIndex = 0;

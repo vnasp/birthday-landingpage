@@ -93,7 +93,9 @@ const MonsterQuiz = ({ onSolved }: Props) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <p className="text-2xl mb-2">Tercera palabra desbloqueada</p>
+          <p className="text-2xl text-white text-nowrap">
+            Tercera palabra desbloqueada
+          </p>
           <h1 className="text-6xl font-bold text-white uppercase">Martín</h1>
         </motion.div>
       )}
@@ -109,7 +111,7 @@ const MonsterQuiz = ({ onSolved }: Props) => {
             Desde el Upside Down...
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 min-h-[304px]">
             {ALL_MONSTERS.map((m) => {
               const isSelected = selected.includes(m);
 
@@ -118,12 +120,12 @@ const MonsterQuiz = ({ onSolved }: Props) => {
                   key={m}
                   onClick={() => toggle(m)}
                   whileTap={{ scale: 0.98 }}
-                  className={`card-energy w-36 h-36 rounded-xl bg-indigo-950/70 overflow-hidden shadow-lg p-0 focus:outline-none transition-all ${
+                  className={`card-energy relative w-36 h-36 rounded-xl bg-indigo-950/70 overflow-hidden shadow-lg p-0 focus:outline-none transition-all ${
                     isSelected ? "selected" : ""
                   }`}
                 >
-                  <div className="absolute inset-0  flex items-center justify-center p-4">
-                    <span className="text-white font-semibold text-lg text-center">
+                  <div className="absolute inset-0 flex items-center justify-center p-4">
+                    <span className="text-white font-semibold text-lg text-center leading-tight">
                       {m}
                     </span>
                     <div className="particles">
