@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface TimeLeft {
@@ -9,13 +9,13 @@ interface TimeLeft {
 }
 
 // Generar partículas aleatorias
-const particles = Array.from({ length: 40 }, (_, i) => ({
+const particles = Array.from({ length: 50 }, (_, i) => ({
   id: i,
   x: Math.random() * 100,
   y: Math.random() * 100,
   duration: 3 + Math.random() * 4,
   delay: Math.random() * 3,
-  size: 2 + Math.random() * 4,
+  size: 3 + Math.random() * 6,
 }));
 
 const Countdown = () => {
@@ -25,16 +25,23 @@ const Countdown = () => {
     minutes: 0,
     seconds: 0,
   });
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const target = new Date(
-      new Date("2025-11-08T21:28:00").toLocaleString("en-US", {
-        timeZone: "America/Santiago",
-      })
-    ).getTime();
+    // Reproducir el audio del reloj
+    if (audioRef.current) {
+      audioRef.current.volume = 1;
+      audioRef.current.play();
+    }
+  }, []);
+
+  useEffect(() => {
+    // Usar el mismo formato que en App.tsx para consistencia
+    const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime();
+
     const updateCountdown = () => {
       const now = new Date().getTime();
-      const difference = target - now;
+      const difference = targetDate - now;
 
       if (difference > 0) {
         setTimeLeft({
@@ -58,6 +65,8 @@ const Countdown = () => {
 
   return (
     <div className="fixed inset-0 bg-black z-50 flex items-center justify-center bg-[url('/bg0.webp')] bg-cover bg-top">
+      <audio ref={audioRef} src="./audio/clock.mp3" loop className="hidden" />
+
       <div className="relative flex flex-col items-center justify-center text-center w-full h-screen overflow-hidden px-6">
         {/* Partículas brillantes */}
         {particles.map((particle) => (
@@ -108,21 +117,29 @@ const Countdown = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
+          <p className="text-xl md:text-3xl text-white mb-12 mt-10">
+            <span className="text-2xl md:text-5xl font-bold">Martín,</span>{" "}
+            <br /> el Upside Down te llama. <br />
+            <span className="text-lg md:text-xl">
+              Solo los que cumplen <i>eleven</i> pueden cruzar.
+            </span>
+          </p>
           <p className="text-xl md:text-3xl text-gray-300 mb-12">
-            El Portal se abrirá
+            El portal se abrirá el
           </p>
 
           <motion.h1
             className="text-2xl md:text-4xl font-bold text-white mb-24 drop-shadow-[0_0_20px_rgba(255,100,100,0.8)]"
             style={{ fontFamily: '"ITC Benguiat W01", serif' }}
             animate={{
+              scale: [1, 1.05, 1],
               textShadow: [
                 "0 0 20px rgba(255,100,100,0.8)",
                 "0 0 30px rgba(255,150,150,1)",
                 "0 0 20px rgba(255,100,100,0.8)",
               ],
             }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           >
             11 Noviembre 2025
           </motion.h1>

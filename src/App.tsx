@@ -15,16 +15,16 @@ function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Verificar si ya es 11 de noviembre de 2025 00:00:00 en hora de Chile
     const checkUnlocked = () => {
-      const targetDate = new Date(
-        new Date("2025-11-11T00:00:00").toLocaleString("en-US", {
-          timeZone: "America/Santiago",
-        })
-      ).getTime();
+      const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime(); // UTC-3 para Chile
+
       const now = new Date().getTime();
 
-      if (now >= targetDate && !isUnlocked) {
+      console.log("Target:", new Date(targetDate));
+      console.log("Now:", new Date(now));
+      console.log("Is unlocked:", now >= targetDate);
+
+      if (now >= targetDate) {
         setIsUnlocked(true);
       }
     };
@@ -35,7 +35,7 @@ function App() {
     const interval = setInterval(checkUnlocked, 10000);
 
     return () => clearInterval(interval);
-  }, [isUnlocked]);
+  }, []);
 
   useEffect(() => {
     // Establecer volumen del audio ambiental
