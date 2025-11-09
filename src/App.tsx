@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const checkUnlocked = () => {
-      const targetDate = new Date("2025-11-07T00:00:00-03:00").getTime(); // UTC-3 para Chile
+      const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime(); // UTC-3 para Chile
 
       const now = new Date().getTime();
 
@@ -43,24 +43,28 @@ function App() {
     const ua = navigator.userAgent;
     const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(ua);
     setIsSafari(isSafariBrowser);
+  }, []);
 
+  useEffect(() => {
     // Establecer volumen del audio ambiental
-    if (audioRef.current) {
+    if (audioRef.current && isUnlocked) {
       audioRef.current.volume = 0.3; // 30% del volumen original
 
       // Si NO es Safari, reproducir automáticamente
-      if (!isSafariBrowser && isUnlocked) {
+      if (!isSafari) {
         audioRef.current
           .play()
           .then(() => {
             setAudioOn(true);
           })
-          .catch(() => {
-            // Si falla el autoplay, no hacer nada
+          .catch((error) => {
+            console.log("Autoplay bloqueado:", error);
+            // Si falla el autoplay, mostrar botón para todos
+            setIsSafari(true);
           });
       }
     }
-  }, [isUnlocked]);
+  }, [isUnlocked, isSafari]);
 
   const handleAudioToggle = () => {
     const audio = audioRef.current;
