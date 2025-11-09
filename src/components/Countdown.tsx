@@ -117,22 +117,23 @@ const Countdown = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <p className="text-xl md:text-3xl text-white mb-12 mt-10">
-            <span className="text-2xl md:text-5xl font-bold">Martín,</span>{" "}
+          <p className="text-xl md:text-2xl text-white mb-8 max-w-xl mx-auto leading-tight text-shadow-md text-shadow-gray-800">
+            <span className="text-2xl md:text-4xl font-bold">Martín,</span>{" "}
             <br /> el Upside Down te llama. <br />
-            <span className="text-lg md:text-xl">
-              Solo los que cumplen <i>eleven</i> pueden cruzar.
+            <span className="text-xl md:text-2xl">
+              Solo los que cumplen <i>eleven</i>
+              <br /> pueden cruzar.
             </span>
           </p>
-          <p className="text-xl md:text-3xl text-gray-300 mb-12">
+          <p className="text-sm font-bold uppercase text-white">
             El portal se abrirá el
           </p>
 
           <motion.h1
-            className="text-2xl md:text-4xl font-bold text-white mb-24 drop-shadow-[0_0_20px_rgba(255,100,100,0.8)]"
+            className="text-xl md:text-2xl font-bold text-white mb-16 drop-shadow-[0_0_20px_rgba(255,100,100,0.8)]"
             style={{ fontFamily: '"ITC Benguiat W01", serif' }}
             animate={{
-              scale: [1, 1.05, 1],
+              scale: [1, 1.07, 1],
               textShadow: [
                 "0 0 20px rgba(255,100,100,0.8)",
                 "0 0 30px rgba(255,150,150,1)",
@@ -141,7 +142,7 @@ const Countdown = () => {
             }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           >
-            11 Noviembre 2025
+            11 NOVIEMBRE 2025
           </motion.h1>
 
           {/* Contador */}
