@@ -17,17 +17,25 @@ const LightsPuzzle = ({ onSolved }: Props) => {
   }, []);
 
   const handleClick = (letter: string) => {
+    let newActiveLetters: string[];
+
     if (activeLetters.includes(letter)) {
-      setActiveLetters(activeLetters.filter((l) => l !== letter));
+      newActiveLetters = activeLetters.filter((l) => l !== letter);
     } else {
-      setActiveLetters([...activeLetters, letter]);
+      newActiveLetters = [...activeLetters, letter];
     }
 
-    // Opción: validar orden libre
-    const all = correct.every((l) => [...activeLetters, letter].includes(l));
-    if (all && activeLetters.length + 1 >= correct.length) {
-      setShowSuccess(true);
-      setTimeout(() => onSolved(), 3000);
+    setActiveLetters(newActiveLetters);
+
+    // Validar: exactamente las 5 letras correctas, sin importar el orden
+    if (newActiveLetters.length === correct.length) {
+      const hasAllCorrect = correct.every((l) => newActiveLetters.includes(l));
+      const hasOnlyCorrect = newActiveLetters.every((l) => correct.includes(l));
+
+      if (hasAllCorrect && hasOnlyCorrect) {
+        setShowSuccess(true);
+        setTimeout(() => onSolved(), 3000);
+      }
     }
   };
 

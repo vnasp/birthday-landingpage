@@ -6,11 +6,36 @@ import MonsterQuiz from "./components/MonsterQuiz";
 import PortalReveal from "./components/PortalReveal";
 import Logo from "./components/Logo";
 import FogAnimation from "./components/FogAnimation";
+import Countdown from "./components/Countdown";
 
 function App() {
   const [stage, setStage] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Verificar si ya es 11 de noviembre de 2025 00:00:00 en hora de Chile
+    const checkUnlocked = () => {
+      const targetDate = new Date(
+        new Date("2025-11-11T00:00:00").toLocaleString("en-US", {
+          timeZone: "America/Santiago",
+        })
+      ).getTime();
+      const now = new Date().getTime();
+
+      if (now >= targetDate && !isUnlocked) {
+        setIsUnlocked(true);
+      }
+    };
+
+    checkUnlocked();
+
+    // Verificar cada 10 segundos para detectar el cambio de fecha rápidamente
+    const interval = setInterval(checkUnlocked, 10000);
+
+    return () => clearInterval(interval);
+  }, [isUnlocked]);
 
   useEffect(() => {
     // Establecer volumen del audio ambiental
@@ -34,6 +59,11 @@ function App() {
   const handleSolved = (_word: string) => {
     setStage((prev) => prev + 1);
   };
+
+  // Si no está desbloqueado, mostrar countdown
+  if (!isUnlocked) {
+    return <Countdown />;
+  }
 
   return (
     <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.webp')] bg-cover bg-center p-4 overflow-hidden">
