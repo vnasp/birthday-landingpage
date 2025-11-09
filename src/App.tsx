@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const checkUnlocked = () => {
-      const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime(); // UTC-3 para Chile
+      const targetDate = new Date("2025-11-07T00:00:00-03:00").getTime(); // UTC-3 para Chile
 
       const now = new Date().getTime();
 
