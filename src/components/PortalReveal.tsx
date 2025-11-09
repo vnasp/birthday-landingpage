@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 // Generar partículas aleatorias - cantidad moderada
 const particles = Array.from({ length: 75 }, (_, i) => ({
@@ -11,6 +12,23 @@ const particles = Array.from({ length: 75 }, (_, i) => ({
 }));
 
 function PortalReveal() {
+  const [displayedText, setDisplayedText] = useState("");
+  const fullText = "Mensaje secreto descifrado:";
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setDisplayedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="fixed inset-0 bg-black z-50 flex items-center justify-center bg-[url('/bg4.webp')] bg-cover bg-top">
       <div className="relative flex flex-col items-center justify-center text-center w-full h-screen overflow-hidden px-6">
@@ -63,14 +81,14 @@ function PortalReveal() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
         >
-          <motion.p
-            className="mb-8 text-2xl text-gray-200 font-semibold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Mensaje secreto descifrado:
-          </motion.p>
+          <div className="mb-8 text-2xl text-gray-200 font-semibold h-8">
+            {displayedText}
+            <motion.span
+              className="inline-block w-1 h-6 bg-gray-200 ml-1 align-middle"
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+            />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

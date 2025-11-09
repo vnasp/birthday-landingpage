@@ -12,11 +12,12 @@ function App() {
   const [stage, setStage] = useState(0);
   const [audioOn, setAudioOn] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkUnlocked = () => {
-      const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime(); // UTC-3 para Chile
+      const targetDate = new Date("2025-11-07T00:00:00-03:00").getTime(); // UTC-3 para Chile
 
       const now = new Date().getTime();
 
@@ -38,11 +39,28 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // Detectar si es Safari
+    const ua = navigator.userAgent;
+    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(ua);
+    setIsSafari(isSafariBrowser);
+
     // Establecer volumen del audio ambiental
     if (audioRef.current) {
       audioRef.current.volume = 0.3; // 30% del volumen original
+
+      // Si NO es Safari, reproducir automáticamente
+      if (!isSafariBrowser && isUnlocked) {
+        audioRef.current
+          .play()
+          .then(() => {
+            setAudioOn(true);
+          })
+          .catch(() => {
+            // Si falla el autoplay, no hacer nada
+          });
+      }
     }
-  }, []);
+  }, [isUnlocked]);
 
   const handleAudioToggle = () => {
     const audio = audioRef.current;
@@ -71,36 +89,38 @@ function App() {
 
       <audio ref={audioRef} src="./audio/ost.mp3" loop className="hidden" />
 
-      <button
-        onClick={handleAudioToggle}
-        className="absolute top-4 right-4 group z-20"
-        aria-label="Activar o pausar sonido"
-      >
-        <motion.div
-          animate={
-            audioOn
-              ? {
-                  scale: [1, 1.15, 1],
-                  boxShadow: [
-                    "0 0 8px #ff0000",
-                    "0 0 20px #ff3333",
-                    "0 0 8px #ff0000",
-                  ],
-                }
-              : {
-                  scale: 1,
-                  boxShadow: "0 0 4px #330000",
-                }
-          }
-          transition={{ repeat: audioOn ? Infinity : 0, duration: 1.5 }}
-          className={`h-4 w-4 rounded-full transition-all duration-500 ${
-            audioOn ? "bg-red-600" : "bg-red-900"
-          }`}
-        />
-        <span className="absolute top-8 right-0 text-xs text-red-500 opacity-0 group-hover:opacity-100 transition">
-          {audioOn ? "ON" : "OFF"}
-        </span>
-      </button>
+      {isSafari && (
+        <button
+          onClick={handleAudioToggle}
+          className="absolute top-4 right-4 group z-20"
+          aria-label="Activar o pausar sonido"
+        >
+          <motion.div
+            animate={
+              audioOn
+                ? {
+                    scale: [1, 1.15, 1],
+                    boxShadow: [
+                      "0 0 8px #ff0000",
+                      "0 0 20px #ff3333",
+                      "0 0 8px #ff0000",
+                    ],
+                  }
+                : {
+                    scale: 1,
+                    boxShadow: "0 0 4px #330000",
+                  }
+            }
+            transition={{ repeat: audioOn ? Infinity : 0, duration: 1.5 }}
+            className={`h-4 w-4 rounded-full transition-all duration-500 ${
+              audioOn ? "bg-red-600" : "bg-red-900"
+            }`}
+          />
+          <span className="absolute top-8 right-0 text-xs text-red-500 opacity-0 group-hover:opacity-100 transition">
+            {audioOn ? "ON" : "OFF"}
+          </span>
+        </button>
+      )}
 
       <AnimatePresence mode="wait">
         {stage === 0 && (
