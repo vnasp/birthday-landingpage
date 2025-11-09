@@ -164,10 +164,10 @@ const WalkieTalkie = ({ onSolved }: Props) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <p className="text-2xl text-white text-nowrap">
+          <p className="text-lg md:text-2xl text-white text-nowrap">
             Segunda palabra desbloqueada
           </p>
-          <h1 className="text-6xl font-bold text-white uppercase">
+          <h1 className="text-4xl md:text-6xl font-bold text-white uppercase">
             Cumpleaños
           </h1>
         </motion.div>
@@ -211,7 +211,7 @@ const WalkieTalkie = ({ onSolved }: Props) => {
 
       {/* Walkie Talkie - bottom */}
       {!showSuccess && (
-        <div className="shrink-0 pb-10 z-30 flex justify-center">
+        <div className="shrink-0 pb-20 md:pb-14 lg:pb-10 z-30 flex justify-center">
           <motion.div
             className="relative cursor-pointer"
             onClick={handlePlayAudio}

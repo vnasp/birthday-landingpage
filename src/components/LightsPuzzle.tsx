@@ -54,20 +54,22 @@ const LightsPuzzle = ({ onSolved }: Props) => {
           animate={{ opacity: 1, scale: 1 }}
         >
           <div className="flex flex-col items-center gap-4">
-            <p className="text-2xl text-white text-nowrap">
+            <p className="text-lg md:text-2xl text-white text-nowrap">
               Primera palabra desbloqueada
             </p>
-            <h1 className="text-6xl font-bold text-white uppercase">Feliz</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white uppercase">
+              Feliz
+            </h1>
           </div>
         </motion.div>
       )}
 
       {!showSuccess && (
         <>
-          <h2 className="text-2xl mb-4">
+          <h2 className="text-3xl md:text-2xl mb-4">
             Las luces parpadean... ¿Qué intentan decir?
           </h2>
-          <div className="grid grid-cols-5 gap-4 mt-6">
+          <div className="grid md:grid-cols-5 grid-cols-3 gap-4 mt-6">
             {letters.map((letter, i) => {
               const isActive = activeLetters.includes(letter);
               return (

@@ -93,10 +93,12 @@ const MonsterQuiz = ({ onSolved }: Props) => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <p className="text-2xl text-white text-nowrap">
+          <p className="text-lg md:text-2xl text-white text-nowrap">
             Tercera palabra desbloqueada
           </p>
-          <h1 className="text-6xl font-bold text-white uppercase">Martín</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white uppercase">
+            Martín
+          </h1>
         </motion.div>
       )}
 
@@ -108,10 +110,10 @@ const MonsterQuiz = ({ onSolved }: Props) => {
           animate={{ opacity: 1 }}
         >
           <h2 className="text-2xl mb-6 text-white font-bold drop-shadow-lg">
-            Desde el Upside Down...
+            Desde el Upside Down vienen dos monstruos...
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 min-h-[304px]">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 min-h-[304px]">
             {ALL_MONSTERS.map((m) => {
               const isSelected = selected.includes(m);
 

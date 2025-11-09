@@ -10,20 +10,14 @@ import Countdown from "./components/Countdown";
 
 function App() {
   const [stage, setStage] = useState(0);
-  const [audioOn, setAudioOn] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
-  const [isSafari, setIsSafari] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const checkUnlocked = () => {
-      const targetDate = new Date("2025-11-07T00:00:00-03:00").getTime(); // UTC-3 para Chile
+      const targetDate = new Date("2025-11-11T00:00:00-03:00").getTime(); // UTC-3 para Chile
 
       const now = new Date().getTime();
-
-      console.log("Target:", new Date(targetDate));
-      console.log("Now:", new Date(now));
-      console.log("Is unlocked:", now >= targetDate);
 
       if (now >= targetDate) {
         setIsUnlocked(true);
@@ -39,44 +33,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Detectar si es Safari
-    const ua = navigator.userAgent;
-    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(ua);
-    setIsSafari(isSafariBrowser);
-  }, []);
-
-  useEffect(() => {
-    // Establecer volumen del audio ambiental
-    if (audioRef.current && isUnlocked) {
-      audioRef.current.volume = 0.3; // 30% del volumen original
-
-      // Si NO es Safari, reproducir automáticamente
-      if (!isSafari) {
-        audioRef.current
-          .play()
-          .then(() => {
-            setAudioOn(true);
-          })
-          .catch((error) => {
-            console.log("Autoplay bloqueado:", error);
-            // Si falla el autoplay, mostrar botón para todos
-            setIsSafari(true);
-          });
-      }
+    // Reproducir el audio del ost solo cuando esté desbloqueado
+    if (isUnlocked && audioRef.current) {
+      audioRef.current.volume = 1;
+      audioRef.current.play().catch((error) => {
+        console.log("Audio autoplay prevented:", error);
+      });
     }
-  }, [isUnlocked, isSafari]);
-
-  const handleAudioToggle = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (audioOn) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-    setAudioOn(!audioOn);
-  };
+  }, [isUnlocked]);
 
   const handleSolved = (_word: string) => {
     setStage((prev) => prev + 1);
@@ -90,41 +54,7 @@ function App() {
   return (
     <div className="relative min-h-screen bg-black text-white flex items-center justify-center bg-[url('/bg1.webp')] bg-cover bg-center p-4 overflow-hidden">
       <FogAnimation />
-
       <audio ref={audioRef} src="./audio/ost.mp3" loop className="hidden" />
-
-      {isSafari && (
-        <button
-          onClick={handleAudioToggle}
-          className="absolute top-4 right-4 group z-20"
-          aria-label="Activar o pausar sonido"
-        >
-          <motion.div
-            animate={
-              audioOn
-                ? {
-                    scale: [1, 1.15, 1],
-                    boxShadow: [
-                      "0 0 8px #ff0000",
-                      "0 0 20px #ff3333",
-                      "0 0 8px #ff0000",
-                    ],
-                  }
-                : {
-                    scale: 1,
-                    boxShadow: "0 0 4px #330000",
-                  }
-            }
-            transition={{ repeat: audioOn ? Infinity : 0, duration: 1.5 }}
-            className={`h-4 w-4 rounded-full transition-all duration-500 ${
-              audioOn ? "bg-red-600" : "bg-red-900"
-            }`}
-          />
-          <span className="absolute top-8 right-0 text-xs text-red-500 opacity-0 group-hover:opacity-100 transition">
-            {audioOn ? "ON" : "OFF"}
-          </span>
-        </button>
-      )}
 
       <AnimatePresence mode="wait">
         {stage === 0 && (

@@ -81,7 +81,7 @@ function PortalReveal() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
         >
-          <div className="mb-8 text-2xl text-gray-200 font-semibold h-8">
+          <div className="mb-8 text-xl md:text-2xl text-gray-200 font-semibold h-8">
             {displayedText}
             <motion.span
               className="inline-block w-1 h-6 bg-gray-200 ml-1 align-middle"
@@ -109,7 +109,7 @@ function PortalReveal() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2, duration: 1 }}
-            className="bg-linear-to-br from-gray-900 to-gray-800 p-6 rounded-2xl shadow-2xl max-w-2xl mx-auto"
+            className="bg-linear-to-br from-gray-900 to-gray-800 p-4 md:p-6 rounded-2xl shadow-2xl max-w-2xl mx-auto"
             style={{
               boxShadow:
                 "0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
@@ -121,16 +121,16 @@ function PortalReveal() {
                 <img
                   src="/fortnite.webp"
                   alt="Fortnite"
-                  className="w-32 h-32 object-cover rounded-lg shadow-lg"
+                  className="w-26 h-26 md:w-32 md:h-32 object-cover rounded-lg shadow-lg"
                 />
               </div>
 
               {/* Código */}
               <div className="flex-1 text-left">
-                <p className="text-2xl md:text-3xl font-bold text-white mb-2">
+                <p className="text-lg md:text-3xl font-bold text-white mb-2">
                   🎁 Tu Regalo:
                 </p>
-                <p className="text-xl md:text-2xl font-mono text-yellow-400 bg-black/40 px-4 py-3 rounded-lg inline-block border-2 border-yellow-600/30">
+                <p className="text-base md:text-2xl font-mono text-yellow-400 bg-black/40 px-4 py-3 rounded-lg inline-block border-2 border-yellow-600/30">
                   FORTNITE-2025-GIFT
                 </p>
               </div>

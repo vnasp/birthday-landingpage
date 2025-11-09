@@ -83,7 +83,7 @@ input {
 }
 
 .st {
-  @apply w-fit max-w-200 text-center uppercase font-extrabold text-[#1c0502] mx-auto mt-24 mb-12;
+  @apply w-fit max-w-70 sm:text-[4rem] md:max-w-160 md:text-[6rem] lg:max-w-200 text-center uppercase font-extrabold text-[#1c0502] mx-auto mt-24 mb-12 text-[3rem];
   font-family: "ITC Benguiat W01";
   text-shadow: -0.05rem -0.05rem 1px #ed2b12, 0.05rem -0.05rem 1px #ed2b12,
     -0.05rem 0.05rem 1px #ed2b12, 0.05rem 0.05rem 1px #ed2b12, 0 0 15px #630100,
@@ -103,77 +103,63 @@ input {
 }
 
 .st-bound-full {
-  @apply lg:-mb-4 md:-mb-1 w-full max-w-full ms-0;
+  @apply lg:-mb-3 md:-mb-1 w-full max-w-full ms-0;
 }
 
 .st-bound-mini {
-  @apply lg:mt-12 md:mt-10;
-  align-self: flex-start;
-  min-width: 6.25rem;
+  @apply lg:mt-12 md:mt-10 sm:mt-8 min-w-10 md:min-w-24;
 }
 
 .st-bound-left {
-  flex: 1 1 6.25rem;
+  @apply mb-5 md:mb-20;
 }
 
 .st-bound-right {
-  flex: 1 1 6.25rem;
+  @apply mb-5 md:mb-20;
 }
 
 .st-bottom {
-  top: -3.5rem;
-  position: relative;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
+  @apply relative flex flex-row items-center justify-center gap-2 w-full md:-top-14 -top-8 tracking-wide;
 }
 
 .st-bottom p {
-  margin: 0;
+  @apply m-0;
 }
 
 .st-drop {
-  line-height: 0;
-  position: relative;
-  top: 1.8rem;
+  @apply relative leading-0 md:top-[1.8rem] top-2;
 }
 
 .st-stranger-s {
-  font-size: 9rem;
-  letter-spacing: -0.5rem;
+  @apply text-[4rem] sm:text-[5rem] md:text-[9rem] tracking-wide;
 }
 
 .st-stranger-t {
-  letter-spacing: 0;
+  @apply leading-0;
 }
 
 .st-stranger-n {
-  letter-spacing: -5px;
+  @apply leading-[-5px];
 }
 
 .st-stranger-g {
-  letter-spacing: 0;
+  @apply leading-0;
 }
 
 .st-stranger-r-2 {
-  font-size: 9rem;
-  right: 0.2rem;
+  @apply text-[4rem] sm:text-[5rem] md:text-[9rem] tracking-wide;
 }
 
 .st-things-t {
-  font-size: 100%;
-  letter-spacing: 2px;
+  @apply leading-0 tracking-tighter;
 }
 
 .st-things-n {
-  letter-spacing: -5px;
+  @apply leading-[-5px];
 }
 
 .st-things-g {
-  letter-spacing: -3px;
+  @apply leading-[-3px];
 }
 
 /* ---------- Fog ---------- */
@@ -569,31 +555,7 @@ input {
   }
 }
 
-/* Responsive adjustments: use rem-based widths for the logo */
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-  /* md / tablet: reduce logo max width so 50rem (800px) stays for lg */
-  .st {
-    max-width: 40rem; /* ~640px */
-    /* slightly reduce headline size on tablet if needed */
-    font-size: 6rem;
-  }
-
-  .st-bound-mini {
-    min-width: 5rem; /* ~80px */
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-  /* lg and up keep the larger max */
-  .st {
-    max-width: 50rem; /* ~800px */
-    font-size: 6rem;
-  }
-}
-
-/**** Ampolleta ****/
-
-/* Estilos para bulb individual sin switch */
+/**** Ampolleta ****/ /* Estilos para bulb individual sin switch */
 .bulb {
   height: 90px;
   width: 90px;
