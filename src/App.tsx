@@ -9,7 +9,6 @@ import FogAnimation from "./components/FogAnimation";
 
 function App() {
   const [stage, setStage] = useState(0);
-  const [words, setWords] = useState<string[]>([]);
   const [audioOn, setAudioOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -32,8 +31,7 @@ function App() {
     setAudioOn(!audioOn);
   };
 
-  const handleSolved = (word: string) => {
-    setWords((prev) => [...prev, word]);
+  const handleSolved = (_word: string) => {
     setStage((prev) => prev + 1);
   };
 
