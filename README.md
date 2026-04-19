@@ -1,95 +1,52 @@
-# React + TypeScript + Vite
+# Stranger Birthday - Invitación Interactiva
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web interactiva temática de Stranger Things creada como invitación de cumpleaños. El invitado debe superar tres pruebas inspiradas en la serie (luces, walkie-talkie, quiz del Demogorgon) para descubrir un código secreto con los detalles de la fiesta.
 
-Currently, two official plugins are available:
+> Nota: Proyecto personal creativo. Incluye countdown hasta la fecha del evento, efectos de niebla, audio ambiental y animaciones con Framer Motion.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Vista previa
 
-## React Compiler
+[https://vnasp.github.io/birthday-landingpage/](https://vnasp.github.io/birthday-landingpage/)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Funcionalidades
 
-## Expanding the ESLint configuration
+- Countdown animado hasta la fecha del evento
+- Tres minijuegos interactivos:
+  - Puzzle de luces (estilo letras en la pared)
+  - Walkie-talkie con audio
+  - Quiz del Demogorgon
+- Revelación del portal con código secreto al completar
+- Efectos visuales: niebla animada, glitch text, transiciones
+- Audio ambiental (OST) y efectos de sonido
+- Animaciones con Framer Motion
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tecnologías
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- Framer Motion
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Estructura del Proyecto
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+birthday-landingpage/
+├── public/
+│   ├── audio/          # Música y efectos de sonido
+│   └── *.webp          # Fondos temáticos
+├── src/
+│   ├── components/
+│   │   ├── Countdown.tsx
+│   │   ├── LightsPuzzle.tsx
+│   │   ├── WalkieTalkie.tsx
+│   │   ├── MonsterQuiz.tsx
+│   │   ├── PortalReveal.tsx
+│   │   ├── FogAnimation.tsx
+│   │   ├── GlitchText.tsx
+│   │   └── Logo.tsx
+│   ├── App.tsx
+│   └── main.tsx
+├── vite.config.ts
+└── package.json
 ```
-
-## Tailwind CSS
-
-This project can use Tailwind CSS. I added a minimal Tailwind v4 setup (configuration and PostCSS).
-
-Quick start:
-
-1. Instala las dependencias (Tailwind v4, PostCSS y Autoprefixer):
-
-```bash
-npm install -D tailwindcss@^4 postcss autoprefixer
-```
-
-2. Ejecuta el servidor de desarrollo:
-
-```bash
-npm run dev
-```
-
-3. Tailwind ya está disponible: usa clases en tus componentes y el CSS se genera a partir de `src/index.css`.
-
-Si quieres personalizar Tailwind, edita `tailwind.config.cjs`.
