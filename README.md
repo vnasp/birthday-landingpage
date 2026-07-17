@@ -1,8 +1,8 @@
 # Stranger Birthday - Invitación Interactiva
 
-Web interactiva temática de Stranger Things creada como invitación de cumpleaños. El invitado debe superar tres pruebas inspiradas en la serie (luces, walkie-talkie, quiz del Demogorgon) para descubrir un código secreto con los detalles de la fiesta.
+Web interactiva temática de Stranger Things creada como regalo de cumpleaños. El invitado debe superar tres pruebas inspiradas en la serie (luces, walkie-talkie, quiz del Demogorgon) para descubrir un código secreto con los detalles de su regalo.
 
-> Nota: Proyecto personal creativo. Incluye countdown hasta la fecha del evento, efectos de niebla, audio ambiental y animaciones con Framer Motion.
+> Nota: Proyecto personal creado para mi sobrino. Incluye countdown hasta la fecha del evento, efectos de niebla, audio ambiental y animaciones con Framer Motion.
 
 ## Vista previa
 
